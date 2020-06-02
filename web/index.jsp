@@ -9,6 +9,7 @@
 <html>
   <head>
     <title>$Title$</title>
+    <p>Hola</p>
   </head>
   <body>
   $END$

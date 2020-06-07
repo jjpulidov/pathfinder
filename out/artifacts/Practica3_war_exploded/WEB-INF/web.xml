@@ -17,4 +17,14 @@
         <servlet-name>WSServlet</servlet-name>
         <url-pattern>/services/*</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <description>Servlet para gestion de ficheros</description>
+        <display-name>FileManagement</display-name>
+        <servlet-name>FileManagement</servlet-name>
+        <servlet-class>es.unex.cum.iiisa.servlets.FileManagement</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>FileManagement</servlet-name>
+        <url-pattern>/FileManagement</url-pattern>
+    </servlet-mapping>
 </web-app>

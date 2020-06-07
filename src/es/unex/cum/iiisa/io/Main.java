@@ -22,7 +22,7 @@ public class Main {
         }
 
         // Llamada al algoritmo con los valores r y q que entran por teclado, al igual que los nombres
-        PathFinder pfnet = new PathFinder(2, 6, e.getMatriz(), nombres1, e.getIdentificador());
+        PathFinder pfnet = new PathFinder(e, 2, 6, nombres1);
 
         // Este método directamente genera los dos archivos de salida en la raíz del proyecto. Son los que habría que descargar
         pfnet.execute();

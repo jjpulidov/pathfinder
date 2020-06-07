@@ -14,12 +14,12 @@ public class Entrada {
     private String tipoValores;
     private int n;
     private int numDecimales;
-    private int valorMin;
-    private int valorMax;
+    private double valorMin;
+    private double valorMax;
     //    private String list;
     private int numPares;
     private String tipoMatriz;
-    private int[][] matriz;
+    private double[][] matriz;
 
     public Entrada(File fichero) {
         this.fichero = fichero;
@@ -46,10 +46,10 @@ public class Entrada {
                     numDecimales = Integer.parseInt(fila.trim());
                     break;
                 case 4:
-                    valorMin = Integer.parseInt(fila.trim());
+                    valorMin = Double.parseDouble(fila.trim());
                     break;
                 case 5:
-                    valorMax = Integer.parseInt(fila.trim());
+                    valorMax = Double.parseDouble(fila.trim());
                     break;
                 case 6:
                     break;
@@ -66,10 +66,10 @@ public class Entrada {
             cont++;
         }
 
-        matriz = new int[n][n];
+        matriz = new double[n][n];
         for (String fila : valoresString) {
             int[] temp = Stream.of(fila.split("\\s+")).mapToInt(Integer::parseInt).toArray();
-            matriz[temp[0] - 1][temp[1] - 1] = temp[2];
+            matriz[(int) temp[0] - 1][(int) temp[1] - 1] = temp[2];
         }
     }
 
@@ -109,7 +109,7 @@ public class Entrada {
         return tipoMatriz;
     }
 
-    public int[][] getMatriz() {
+    public double[][] getMatriz() {
         return matriz;
     }
 }

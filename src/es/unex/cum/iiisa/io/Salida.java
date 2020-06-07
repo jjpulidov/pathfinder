@@ -12,20 +12,18 @@ public class Salida {
     private final DateFormat df1 = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
     private final DateFormat df2 = new SimpleDateFormat("dd/MM/yyyy");
     private final DateFormat df3 = new SimpleDateFormat("hh:mm:ss");
-    private final int[][] matriz;
-    private final long tiempoEjecucion;
+    private final double[][] matriz;
     private final Date fechaInicio;
     private final Date fechaFin;
-    private final String id;
     private final String fichEst;
     private final String fichSal;
+    private Entrada entrada;
 
-    public Salida(int[][] matriz, long tiempoEjecucion, Date fechaInicio, Date fechaFin, String id) {
+    public Salida(Entrada entrada, double[][] matriz, Date fechaInicio, Date fechaFin, String id) {
+        this.entrada = entrada;
         this.matriz = matriz;
-        this.tiempoEjecucion = tiempoEjecucion;
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
-        this.id = id;
         this.fichEst = "estadistica_" + id + ".txt";
         this.fichSal = "salida_" + id + ".txt";
     }
@@ -33,26 +31,38 @@ public class Salida {
     public void run() {
         try {
             FileWriter myWriter = new FileWriter(fichEst);
-            myWriter.write(df2.format(fechaInicio) + "\n" + id + "\n" + df2.format(fechaInicio) + "\n" + df3.format(fechaInicio) + "\n" + df2.format(fechaFin) + "\n" + df3.format(fechaFin));
+            myWriter.write(df2.format(fechaInicio) + "\n" + entrada.getIdentificador() + "\n" + df2.format(fechaInicio) + "\n" + df3.format(fechaInicio) + "\n" + df2.format(fechaFin) + "\n" + df3.format(fechaFin));
             myWriter.close();
         } catch (IOException e) {
             System.out.println("An error occurred.");
             e.printStackTrace();
         }
 
-        List<String> parejas = new ArrayList<>();
+        List<String> pares = new ArrayList<>();
 
         for (int i = 0; i < matriz.length; i++) {
             for (int j = 0; j < matriz[i].length; j++) {
                 if (matriz[i][j] != 0)
-                    parejas.add((i + 1) + "\t" + (j + 1) + "\t" + matriz[i][j]);
+                    pares.add((i + 1) + "\t" + (j + 1) + "\t" + matriz[i][j]);
             }
         }
 
+        List<String> lineas = new ArrayList<>();
+        lineas.add(entrada.getIdentificador() + "_sal");
+        lineas.add(entrada.getTipoValores());
+        lineas.add(String.valueOf(entrada.getN()));
+        lineas.add(String.valueOf(entrada.getNumDecimales()));
+        lineas.add(String.valueOf(entrada.getValorMin()));
+        lineas.add(String.valueOf(entrada.getValorMax()));
+        lineas.add("List");
+        lineas.add(String.valueOf(pares.size()));
+        lineas.add(entrada.getTipoMatriz());
+        lineas.addAll(pares);
+
         try {
             FileWriter myWriter = new FileWriter(fichSal);
-            for (String pareja : parejas)
-                myWriter.write(pareja + "\n");
+            for (String linea : lineas)
+                myWriter.write(linea + "\n");
             myWriter.close();
         } catch (IOException e) {
             System.out.println("An error occurred.");

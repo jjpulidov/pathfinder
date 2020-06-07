@@ -11,7 +11,8 @@ import java.util.List;
 public class Salida {
     private final DateFormat df1 = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
     private final DateFormat df2 = new SimpleDateFormat("dd/MM/yyyy");
-    private final double[][] matriz;
+    private final DateFormat df3 = new SimpleDateFormat("hh:mm:ss");
+    private final int[][] matriz;
     private final long tiempoEjecucion;
     private final Date fechaInicio;
     private final Date fechaFin;
@@ -19,7 +20,7 @@ public class Salida {
     private final String fichEst;
     private final String fichSal;
 
-    public Salida(double[][] matriz, long tiempoEjecucion, Date fechaInicio, Date fechaFin, String id) {
+    public Salida(int[][] matriz, long tiempoEjecucion, Date fechaInicio, Date fechaFin, String id) {
         this.matriz = matriz;
         this.tiempoEjecucion = tiempoEjecucion;
         this.fechaInicio = fechaInicio;
@@ -32,7 +33,7 @@ public class Salida {
     public void run() {
         try {
             FileWriter myWriter = new FileWriter(fichEst);
-            myWriter.write(df2.format(fechaInicio) + " " + id + " " + tiempoEjecucion + " (" + df1.format(fechaInicio) + " - " + df1.format(fechaFin) + ")");
+            myWriter.write(df2.format(fechaInicio) + "\n" + id + "\n" + df2.format(fechaInicio) + "\n" + df3.format(fechaInicio) + "\n" + df2.format(fechaFin) + "\n" + df3.format(fechaFin));
             myWriter.close();
         } catch (IOException e) {
             System.out.println("An error occurred.");
@@ -43,14 +44,15 @@ public class Salida {
 
         for (int i = 0; i < matriz.length; i++) {
             for (int j = 0; j < matriz[i].length; j++) {
-                parejas.add(i + " " + j + " " + matriz[i][j]);
+                if (matriz[i][j] != 0)
+                    parejas.add((i + 1) + "\t" + (j + 1) + "\t" + matriz[i][j]);
             }
         }
 
         try {
             FileWriter myWriter = new FileWriter(fichSal);
             for (String pareja : parejas)
-                myWriter.write(pareja);
+                myWriter.write(pareja + "\n");
             myWriter.close();
         } catch (IOException e) {
             System.out.println("An error occurred.");

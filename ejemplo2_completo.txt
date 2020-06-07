@@ -1,0 +1,74 @@
+ENTRADAS:
+
+Nombre de los nodos:
+
+N1
+N2
+N3
+N4
+
+valores de los parámetros:
+
+valor de q=2 (N-1)
+Valor de r=1
+
+Fichero de entrada:
+
+ejemplo2 (nombre)
+distancias (similaridad/distancias)
+4 (número de Nodos)
+0 (lugares decimales)
+1 (valor mínimo)
+5 (valor máximo)
+List
+12 (número de pares)
+asimetrica (simetrica/asimetrica)
+1	2	1
+1	3	4
+1	4	5
+2	1	2
+2	3	2
+2	4	4
+3	1	1
+3	2	4
+3	4	1
+4	1	5
+4	2	3
+4	3	1
+
+
+SALIDAS:
+
+Fichero de salida:
+
+ejemplo2_sal (nombre)
+distancias (similaridad/distancias)
+4 (número de Nodos)
+0 (lugares decimales)
+1 (valor mínimo)
+5 (valor máximo)
+List
+12 (número de pares)
+asimetrica (simetrica/asimetrica)
+1	2	1
+1	3	3
+1	4	5
+2	1	2
+2	3	2
+2	4	3
+3	1	1
+3	2	2
+3	4	1
+4	1	2
+4	2	3
+4	3	1
+
+Fichero de estadistica:
+
+estadistica_2.txt
+12/05/2020
+ejemplo1
+12/05/2020
+12:02:05.123
+12/05/2020
+12:07:01.225

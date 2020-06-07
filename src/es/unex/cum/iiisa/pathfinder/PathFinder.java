@@ -9,11 +9,11 @@ import java.util.List;
 public class PathFinder {
     private final int q, r, n;
     private final List<String> nombres;
-    private final double[][] matrizPesos;
+    private final int[][] matrizPesos;
     private final String id;
-    private double[][] pfnet;
+    private int[][] pfnet;
 
-    public PathFinder(int r, int q, double[][] matrizPesos, List<String> nombres, String id) {
+    public PathFinder(int r, int q, int[][] matrizPesos, List<String> nombres, String id) {
         this.r = r;
         this.q = q;
         this.matrizPesos = matrizPesos;
@@ -26,7 +26,7 @@ public class PathFinder {
         Date fechaInicio = new Date();
         long tiempoInicio = System.nanoTime();
         // Definición de la matriz de distancias
-        double[][] matrizDistancias = new double[n][n];
+        int[][] matrizDistancias = new int[n][n];
 
         // Inicialización de la matriz de distancias a 0
         matrizDistancias = inicializarMatriz(matrizDistancias);
@@ -35,7 +35,7 @@ public class PathFinder {
         matrizDistancias = copiarMatriz(matrizPesos, matrizDistancias);
 
         // Definición de la matriz de mayor orden
-        double[][] matrizOrdenSuperior = new double[n][n];
+        int[][] matrizOrdenSuperior = new int[n][n];
 
         // Inicialización de la matriz de distancias a 0
         matrizOrdenSuperior = inicializarMatriz(matrizOrdenSuperior);
@@ -57,18 +57,18 @@ public class PathFinder {
         salida.run();
     }
 
-    public double[][] inicializarMatriz(double[][] matrix) {
-        for (double[] fila : matrix) {
+    public int[][] inicializarMatriz(int[][] matrix) {
+        for (int[] fila : matrix) {
             Arrays.fill(fila, 0);
         }
 
         return matrix;
     }
 
-    public double[][] copiarMatriz(double[][] src, double[][] dst) {
+    public int[][] copiarMatriz(int[][] src, int[][] dst) {
         for (int i = 0; i < src.length; i++) {
             for (int j = 0; j < src[i].length; j++) {
-                double valor = src[i][j];
+                int valor = src[i][j];
                 if (valor != 0)
                     dst[i][j] = valor;
             }
@@ -77,38 +77,38 @@ public class PathFinder {
         return dst;
     }
 
-    public double[][] generarMatrizOrdenSuperior(double[][] matrizOrdenInferior) {
-        double[][] matrizOrdenSuperior = new double[n][n];
+    public int[][] generarMatrizOrdenSuperior(int[][] matrizOrdenInferior) {
+        int[][] matrizOrdenSuperior = new int[n][n];
 
         matrizOrdenSuperior = inicializarMatriz(matrizOrdenSuperior);
 
         if (r == 0) {   // r == infinito
             for (int i = 0; i < n; i++) {
                 for (int j = 0; j < n; j++) {
-                    double pesoMin = Double.POSITIVE_INFINITY;
+                    int pesoMin = Integer.MAX_VALUE;
                     for (int k = 0; k < n; k++) {
-                        double temp = Math.max(matrizOrdenInferior[k][j], matrizPesos[i][k]);
+                        int temp = Math.max(matrizOrdenInferior[k][j], matrizPesos[i][k]);
                         if (temp == 0)
                             continue;
                         if (pesoMin > temp)
                             pesoMin = temp;
                     }
-                    if (pesoMin != Double.POSITIVE_INFINITY)
+                    if (pesoMin != Integer.MAX_VALUE)
                         matrizOrdenSuperior[i][j] = pesoMin;
                 }
             }
         } else {
             for (int i = 0; i < n; i++) {
                 for (int j = 0; j < n; j++) {
-                    double pesoMin = Double.POSITIVE_INFINITY;
+                    int pesoMin = Integer.MAX_VALUE;
                     for (int k = 0; k < n; k++) {
-                        double temp = Math.pow(Math.pow(matrizPesos[i][k], r) + Math.pow(matrizOrdenInferior[k][j], r), 1.0 / r);
+                        int temp = (int) Math.pow(Math.pow(matrizPesos[i][k], r) + Math.pow(matrizOrdenInferior[k][j], r), 1.0 / r);
                         if (temp == 0)
                             continue;
                         if (pesoMin > temp)
                             pesoMin = temp;
                     }
-                    if (pesoMin != Double.POSITIVE_INFINITY)
+                    if (pesoMin != Integer.MAX_VALUE)
                         matrizOrdenSuperior[i][j] = pesoMin;
                 }
             }
@@ -117,13 +117,13 @@ public class PathFinder {
         return matrizOrdenSuperior;
     }
 
-    public double[][] generarMatrizDistanciasMinimas(double[][] matrizDistancias, double[][] matrizOrdenSuperior) {
+    public int[][] generarMatrizDistanciasMinimas(int[][] matrizDistancias, int[][] matrizOrdenSuperior) {
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 if (i == j)
                     continue;
-                double valueD = matrizDistancias[i][j];
-                double valueH = matrizOrdenSuperior[i][j];
+                int valueD = matrizDistancias[i][j];
+                int valueH = matrizOrdenSuperior[i][j];
                 if (valueD > 0 && valueH > 0)
                     matrizDistancias[i][j] = Math.min(valueD, valueH);
             }
@@ -132,15 +132,15 @@ public class PathFinder {
         return matrizDistancias;
     }
 
-    public void compararConMatrizPesos(double[][] matrizDistancias) {
-        double[][] matrizFinal = new double[n][n];
+    public void compararConMatrizPesos(int[][] matrizDistancias) {
+        int[][] matrizFinal = new int[n][n];
 
         matrizFinal = inicializarMatriz(matrizFinal);
 
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                double valueW = matrizPesos[i][j];
-                double valueD = matrizDistancias[i][j];
+                int valueW = matrizPesos[i][j];
+                int valueD = matrizDistancias[i][j];
                 if (valueW == valueD)
                     matrizFinal[i][j] = valueD;
             }

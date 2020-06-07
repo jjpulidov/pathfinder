@@ -1,3 +1,12 @@
-1	5	146
-3	6	214
-5	7	259
+ejemplo1_sal
+similaridad
+7
+0
+0.0
+768.0
+List
+3
+simetrica
+1	5	146.0
+3	6	214.0
+5	7	259.0

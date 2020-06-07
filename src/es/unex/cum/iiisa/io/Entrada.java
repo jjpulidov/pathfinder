@@ -14,12 +14,12 @@ public class Entrada {
     private String tipoValores;
     private int n;
     private int numDecimales;
-    private double valorMin;
-    private double valorMax;
+    private int valorMin;
+    private int valorMax;
     //    private String list;
     private int numPares;
     private String tipoMatriz;
-    private double[][] matriz;
+    private int[][] matriz;
 
     public Entrada(File fichero) {
         this.fichero = fichero;
@@ -34,42 +34,42 @@ public class Entrada {
         for (String fila : filas) {
             switch (cont) {
                 case 0:
-                    identificador = fila;
+                    identificador = fila.trim();
                     break;
                 case 1:
-                    tipoValores = fila;
+                    tipoValores = fila.trim();
                     break;
                 case 2:
-                    n = Integer.parseInt(fila);
+                    n = Integer.parseInt(fila.trim());
                     break;
                 case 3:
-                    numDecimales = Integer.parseInt(fila);
+                    numDecimales = Integer.parseInt(fila.trim());
                     break;
                 case 4:
-                    valorMin = Double.parseDouble(fila);
+                    valorMin = Integer.parseInt(fila.trim());
                     break;
                 case 5:
-                    valorMax = Double.parseDouble(fila);
+                    valorMax = Integer.parseInt(fila.trim());
                     break;
                 case 6:
                     break;
                 case 7:
-                    numPares = Integer.parseInt(fila);
+                    numPares = Integer.parseInt(fila.trim());
                     break;
                 case 8:
-                    tipoMatriz = fila;
+                    tipoMatriz = fila.trim();
                     break;
                 default:
-                    valoresString.add(fila);
+                    valoresString.add(fila.trim());
                     break;
             }
             cont++;
         }
 
-        matriz = new double[n][n];
+        matriz = new int[n][n];
         for (String fila : valoresString) {
-            double[] temp = Stream.of(fila.split(" ")).mapToDouble(Double::parseDouble).toArray();
-            matriz[(int) temp[0]][(int) temp[1]] = temp[2];
+            int[] temp = Stream.of(fila.split("\\s+")).mapToInt(Integer::parseInt).toArray();
+            matriz[temp[0] - 1][temp[1] - 1] = temp[2];
         }
     }
 
@@ -109,7 +109,7 @@ public class Entrada {
         return tipoMatriz;
     }
 
-    public double[][] getMatriz() {
+    public int[][] getMatriz() {
         return matriz;
     }
 }

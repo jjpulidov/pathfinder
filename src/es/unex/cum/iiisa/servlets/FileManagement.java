@@ -15,6 +15,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
 @WebServlet(name = "/FileManagement")
 @MultipartConfig
@@ -35,14 +36,41 @@ public class FileManagement extends HttpServlet {
     }
 
     private void leerTeclado(HttpServletRequest request) {
-        int r = Integer.parseInt(request.getParameter("r"));
-        int q = Integer.parseInt(request.getParameter("q"));
-        String[] nodos = request.getParameter("nodos").split(",");
+        String identificador = request.getParameter("identificador");
+        String tipoValores = request.getParameter("valor_celdas");
+        int n = Integer.parseInt(request.getParameter("nodos_red"));
+        int numDecimales = Integer.parseInt(request.getParameter("num_decimales"));
+        double valorMin = Double.parseDouble(request.getParameter("valor_minimo"));
+        double valorMax = Double.parseDouble(request.getParameter("valor_maximo"));
+        int numPares = Integer.parseInt(request.getParameter("num_pares"));
+        String tipoMatriz = request.getParameter("tipo_valor_matriz");
         String[] pares = request.getParameter("pares").split("\n");
-        System.out.println("Teclado!");
-        System.out.println("" + r);
-        System.out.println("" + q);
-        System.out.println("" + nodos.length);
+        double[][] matriz = new double[n][n];
+        for (String fila : pares) {
+            double[] temp = Stream.of(fila.split("\\s+")).mapToDouble(Double::parseDouble).toArray();
+            matriz[(int) temp[0] - 1][(int) temp[1] - 1] = temp[2];
+        }
+
+        if (tipoMatriz.equals("simetrica")) {
+            for (int i = 0; i < matriz.length; i++) {
+                for (int j = 0; j < matriz[i].length; j++) {
+                    if (j < i)
+                        matriz[i][j] = matriz[j][i];
+                }
+            }
+        }
+
+        Entrada entrada = new Entrada(
+                identificador,tipoValores,
+                n,
+                numDecimales,
+                valorMin,
+                valorMax,
+                numPares,
+                tipoMatriz,
+                matriz
+        );
+        startPathfinder(entrada, request);
     }
 
     private void leerFichero(HttpServletRequest request)
@@ -74,25 +102,22 @@ public class FileManagement extends HttpServlet {
                 filecontent.close();
             }
         }
-        int r = Integer.parseInt(request.getParameter("r"));
-        int q = Integer.parseInt(request.getParameter("q"));
-        String[] nodos = request.getParameter("nodos").split(",");
-        List<String> nombres = new ArrayList<>(Arrays.asList(nodos));
         File input = new File(path);
-        startPathfinder(input, r, q, nombres, request.getServletContext().getRealPath(""));
-    }
-
-    private void startPathfinder(File input, int r, int q, List<String> nombres, String pathSalida) {
-        System.out.println("r= " + r);
-        System.out.println("q= " + q);
-        System.out.println("file path= " + input.getAbsolutePath());
-        System.out.println("nombres= " + nombres.size());
         Entrada entrada = new Entrada(input);
         try {
             entrada.procesarFichero();
         } catch (IOException ioException) {
             ioException.printStackTrace();
         }
+        startPathfinder(entrada, request);
+    }
+
+    private void startPathfinder(Entrada entrada, HttpServletRequest request) {
+        int r = Integer.parseInt(request.getParameter("r"));
+        int q = Integer.parseInt(request.getParameter("q"));
+        String[] nodos = request.getParameter("nodos").split(",");
+        List<String> nombres = new ArrayList<>(Arrays.asList(nodos));
+        String pathSalida = request.getServletContext().getRealPath("");
         PathFinder pathFinder = new PathFinder(entrada, r, q, nombres);
         pathFinder.execute(pathSalida);
     }

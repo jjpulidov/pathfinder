@@ -25,6 +25,19 @@ public class Entrada {
         this.fichero = fichero;
     }
 
+    public Entrada(String identificador, String tipoValores, int n, int numDecimales, double valorMin, double valorMax, int numPares, String tipoMatriz, double[][] matriz) {
+        this.fichero = null;
+        this.identificador = identificador;
+        this.tipoValores = tipoValores;
+        this.n = n;
+        this.numDecimales = numDecimales;
+        this.valorMin = valorMin;
+        this.valorMax = valorMax;
+        this.numPares = numPares;
+        this.tipoMatriz = tipoMatriz;
+        this.matriz = matriz;
+    }
+
     public void procesarFichero() throws IOException {
         Charset charset = Charset.defaultCharset();
         List<String> filas = Files.readAllLines(fichero.toPath(), charset);

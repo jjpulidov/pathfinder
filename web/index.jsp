@@ -26,6 +26,19 @@
     <div id="params_teclado">
         <h2>A través de teclado</h2>
         <p>
+            <label>Identificador:<input type="text" name='identificador'></label><br/>
+            <label>Similaridad o distancia:<input type="text" name='valor_celdas'></label><br/>
+            <label>simétrica o asimétrica:<input type="text" name='tipo_valor_matriz'></label><br/>
+            <label>Número de nodos de la red:<input type="text" name='nodos_red'></label><br/>
+            <input type="radio" id="algoritmo1" name="seleccion_algoritmo" value="algoritmo1" checked="checked">
+            <label for="algoritmo1">Algoritmo 1</label>
+            <input type="radio" id="algoritmo2" name="seleccion_algoritmo" value="algoritmo2">
+            <label for="algoritmo2">Algoritmo 2</label><br>
+            <label>Número de decimales de los elementos de la matriz:<input type="text" name='num_decimales'></label><br/>
+            <label>Valor mínimo de los elementos de la matriz:<input type="text" name='valor_minimo'></label><br/>
+            <label>Valor máximo de los elementos de la matriz:<input type="text" name='valor_maximo'></label><br/>
+            <label>Número de pares:<input type="text" name='num_pares'></label><br/>
+            <label>List:<input type="text" name='list' value="List"></label><br/>
             <label>Pares de nodos (separado el par por espacios y los pares por lineas)<br>
                 <textarea rows="20" cols="60" name="pares">Entrar los pares aquí...</textarea>
             </label><br>

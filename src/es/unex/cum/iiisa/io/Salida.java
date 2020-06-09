@@ -1,5 +1,6 @@
 package es.unex.cum.iiisa.io;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DateFormat;
@@ -19,13 +20,13 @@ public class Salida {
     private final String fichSal;
     private final Entrada entrada;
 
-    public Salida(Entrada entrada, double[][] matriz, Date fechaInicio, Date fechaFin, String id) {
+    public Salida(Entrada entrada, double[][] matriz, Date fechaInicio, Date fechaFin, String id, String pathSalida) {
         this.entrada = entrada;
         this.matriz = matriz;
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
         this.fichEst = "estadistica_" + id + ".txt";
-        this.fichSal = "salida_" + id + ".txt";
+        this.fichSal = pathSalida + File.separator + "salida_" + id + ".txt";
     }
 
     public void run() {

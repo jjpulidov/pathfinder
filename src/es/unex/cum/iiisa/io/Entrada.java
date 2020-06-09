@@ -71,6 +71,22 @@ public class Entrada {
             double[] temp = Stream.of(fila.split("\\s+")).mapToDouble(Double::parseDouble).toArray();
             matriz[(int) temp[0] - 1][(int) temp[1] - 1] = temp[2];
         }
+
+        if (tipoMatriz.equals("simetrica")) {
+            for (int i = 0; i < matriz.length; i++) {
+                for (int j = 0; j < matriz[i].length; j++) {
+                    if (j < i)
+                        matriz[i][j] = matriz[j][i];
+                }
+            }
+        }
+
+        for (int i = 0; i< matriz.length; i++){
+            for (int j = 0; j < matriz[i].length; j++){
+                System.out.print(matriz[i][j] + " ");
+            }
+            System.out.println();
+        }
     }
 
     public File getFichero() {

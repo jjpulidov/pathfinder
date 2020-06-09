@@ -29,6 +29,14 @@ public class Salida {
     }
 
     public void run() {
+        System.out.println();
+        for (int i = 0; i< matriz.length; i++){
+            for (int j = 0; j < matriz[i].length; j++){
+                System.out.print(matriz[i][j] + " ");
+            }
+            System.out.println();
+        }
+
         try {
             FileWriter myWriter = new FileWriter(fichEst);
             myWriter.write(df2.format(fechaInicio) + "\n" + entrada.getIdentificador() + "\n" + df2.format(fechaInicio) + "\n" + df3.format(fechaInicio) + "\n" + df2.format(fechaFin) + "\n" + df3.format(fechaFin));

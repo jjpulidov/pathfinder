@@ -1,5 +1,6 @@
 package es.unex.cum.iiisa.servlets;
 
+
 import es.unex.cum.iiisa.io.Entrada;
 import es.unex.cum.iiisa.pathfinder.PathFinder;
 
@@ -20,7 +21,7 @@ import java.util.List;
 public class FileManagement extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
-        String name = request.getParameter("action");
+        String name = request.getParameter("seleccion_entrada");
         System.out.println(name);
         if (name.equals("fichero")) {
             try {

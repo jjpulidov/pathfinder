@@ -68,7 +68,7 @@ public class Entrada {
 
         matriz = new double[n][n];
         for (String fila : valoresString) {
-            int[] temp = Stream.of(fila.split("\\s+")).mapToInt(Integer::parseInt).toArray();
+            double[] temp = Stream.of(fila.split("\\s+")).mapToDouble(Double::parseDouble).toArray();
             matriz[(int) temp[0] - 1][(int) temp[1] - 1] = temp[2];
         }
     }

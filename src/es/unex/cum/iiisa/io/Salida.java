@@ -17,7 +17,7 @@ public class Salida {
     private final Date fechaFin;
     private final String fichEst;
     private final String fichSal;
-    private Entrada entrada;
+    private final Entrada entrada;
 
     public Salida(Entrada entrada, double[][] matriz, Date fechaInicio, Date fechaFin, String id) {
         this.entrada = entrada;

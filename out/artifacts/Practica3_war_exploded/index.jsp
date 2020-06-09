@@ -9,8 +9,10 @@
 <form action="FileManagement" method="post" enctype="multipart/form-data" target="_blank">
     <p>
         <input type="hidden" name="action" value="fichero"><br/>
-        Sube un archivo:
-        <input type="file" name="file"><br/>
+        <label>Parámetro r:<input type="text" name='r'></label><br/>
+        <label>Parámetro q:<input type="text" name='q'></label><br/>
+        <label>Nombre de los nodos (separados por comas):<input type="text" name="nodos"></label><br/>
+        Sube un archivo: <input type="file" name="file"><br/>
         <input type="submit" value="Subir archivo">
     </p>
 </form>

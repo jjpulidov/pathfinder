@@ -1,5 +1,8 @@
 package es.unex.cum.iiisa.servlets;
 
+import es.unex.cum.iiisa.io.Entrada;
+import es.unex.cum.iiisa.pathfinder.PathFinder;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -8,6 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @WebServlet(name = "/FileManagement")
 @MultipartConfig
@@ -67,20 +73,27 @@ public class FileManagement extends HttpServlet {
                 filecontent.close();
             }
         }
-        //TODO al terminar, llamar a new Entrada con el path del fichero en el servidor
-        //Entrada e = new Entrada(new File(savePath + "aqui el nombre del fichero generado"));
-        //try {
-        //    e.procesarFichero();
-        //} catch (IOException ioException) {
-        //    ioException.printStackTrace();
-        //}
+        int r = Integer.parseInt(request.getParameter("r"));
+        int q = Integer.parseInt(request.getParameter("q"));
+        String[] nodos = request.getParameter("nodos").split(",");
+        List<String> nombres = new ArrayList<>(Arrays.asList(nodos));
+        File input = new File(path);
+        startPathfinder(input, r, q, nombres, request.getServletContext().getRealPath(""));
+    }
 
-        // TODO nombres1 tendría que venir en el fichero
-        // Llamada al algoritmo con los valores r y q que entran por teclado, al igual que los nombres
-        // PathFinder pfnet = new PathFinder(2, 6, e.getMatriz(), nombres1, e.getIdentificador());
-        // TODO el metodo execute deberia devolver un listado de files que se guardan en la carpeta downloads en el server
-        // Este método directamente genera los dos archivos de salida en la raíz del proyecto. Son los que habría que descargar
-        //pfnet.execute();
+    private void startPathfinder(File input, int r, int q, List<String> nombres, String pathSalida) {
+        System.out.println("r= " + r);
+        System.out.println("q= " + q);
+        System.out.println("file path= " + input.getAbsolutePath());
+        System.out.println("nombres= " + nombres.size());
+        Entrada entrada = new Entrada(input);
+        try {
+            entrada.procesarFichero();
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        }
+        PathFinder pathFinder = new PathFinder(entrada, r, q, nombres);
+        pathFinder.execute(pathSalida);
     }
 
     private String getFileName(final Part part) {
@@ -94,6 +107,6 @@ public class FileManagement extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
-        System.out.println("GET BIEEEEN");
+        System.out.println("GET BIEN");
     }
 }

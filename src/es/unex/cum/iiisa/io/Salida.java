@@ -29,6 +29,14 @@ public class Salida {
         this.fichSal = pathSalida + File.separator + "salida_" + id + ".txt";
     }
 
+    public String getFichEst() {
+        return fichEst;
+    }
+
+    public String getFichSal() {
+        return fichSal;
+    }
+
     public void run() {
         System.out.println();
         for (int i = 0; i < matriz.length; i++) {

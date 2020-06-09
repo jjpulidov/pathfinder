@@ -8,7 +8,7 @@
 </head>
 <body>
 <h1>Algoritmo Pahtfinder</h1>
-<form action="FileManagement" method="post" enctype="multipart/form-data" target="_blank">
+<form action="FileManagement" method="post" enctype="multipart/form-data">
     <h1>Parámetros comunes</h1>
     <label>Parámetro r:<input type="text" name='r'></label><br/>
     <label>Parámetro q:<input type="text" name='q'></label><br/>
@@ -34,7 +34,8 @@
             <label for="algoritmo1">Algoritmo 1</label>
             <input type="radio" id="algoritmo2" name="seleccion_algoritmo" value="algoritmo2">
             <label for="algoritmo2">Algoritmo 2</label><br>
-            <label>Número de decimales de los elementos de la matriz:<input type="text" name='num_decimales'></label><br/>
+            <label>Número de decimales de los elementos de la matriz:<input type="text"
+                                                                            name='num_decimales'></label><br/>
             <label>Valor mínimo de los elementos de la matriz:<input type="text" name='valor_minimo'></label><br/>
             <label>Valor máximo de los elementos de la matriz:<input type="text" name='valor_maximo'></label><br/>
             <label>Número de pares:<input type="text" name='num_pares'></label><br/>

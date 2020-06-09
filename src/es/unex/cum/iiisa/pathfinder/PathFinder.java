@@ -25,7 +25,7 @@ public class PathFinder {
         this.id = entrada.getIdentificador();
     }
 
-    public void execute(String pathSalida) {
+    public Salida execute(String pathSalida) {
         Date fechaInicio = new Date();
 
         // Definición de la matriz de distancias
@@ -57,6 +57,7 @@ public class PathFinder {
 
         Salida salida = new Salida(entrada, pfnet, fechaInicio, fechaFin, id, pathSalida);
         salida.run();
+        return salida;
     }
 
     public double[][] inicializarMatriz(double[][] matrix) {

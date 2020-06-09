@@ -2,6 +2,7 @@ package es.unex.cum.iiisa.servlets;
 
 
 import es.unex.cum.iiisa.io.Entrada;
+import es.unex.cum.iiisa.io.Salida;
 import es.unex.cum.iiisa.pathfinder.PathFinder;
 
 import javax.servlet.ServletException;
@@ -26,16 +27,16 @@ public class FileManagement extends HttpServlet {
         System.out.println(name);
         if (name.equals("fichero")) {
             try {
-                leerFichero(request);
+                leerFichero(request, response);
             } catch (ServletException | IOException e) {
                 e.printStackTrace();
             }
         } else if (name.equals("teclado")) {
-            leerTeclado(request);
+            leerTeclado(request, response);
         }
     }
 
-    private void leerTeclado(HttpServletRequest request) {
+    private void leerTeclado(HttpServletRequest request, HttpServletResponse response) {
         String identificador = request.getParameter("identificador");
         String tipoValores = request.getParameter("valor_celdas");
         int n = Integer.parseInt(request.getParameter("nodos_red"));
@@ -61,7 +62,7 @@ public class FileManagement extends HttpServlet {
         }
 
         Entrada entrada = new Entrada(
-                identificador,tipoValores,
+                identificador, tipoValores,
                 n,
                 numDecimales,
                 valorMin,
@@ -70,10 +71,10 @@ public class FileManagement extends HttpServlet {
                 tipoMatriz,
                 matriz
         );
-        startPathfinder(entrada, request);
+        startPathfinder(entrada, request, response);
     }
 
-    private void leerFichero(HttpServletRequest request)
+    private void leerFichero(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         final Part filePart = request.getPart("file");
         final String fileName = getFileName(filePart);
@@ -109,17 +110,26 @@ public class FileManagement extends HttpServlet {
         } catch (IOException ioException) {
             ioException.printStackTrace();
         }
-        startPathfinder(entrada, request);
+        startPathfinder(entrada, request, response);
     }
 
-    private void startPathfinder(Entrada entrada, HttpServletRequest request) {
+    private void startPathfinder(Entrada entrada, HttpServletRequest request, HttpServletResponse response) {
         int r = Integer.parseInt(request.getParameter("r"));
         int q = Integer.parseInt(request.getParameter("q"));
         String[] nodos = request.getParameter("nodos").split(",");
         List<String> nombres = new ArrayList<>(Arrays.asList(nodos));
         String pathSalida = request.getServletContext().getRealPath("");
         PathFinder pathFinder = new PathFinder(entrada, r, q, nombres);
-        pathFinder.execute(pathSalida);
+        Salida salida = pathFinder.execute(pathSalida);
+        request.setAttribute("fichero_salida", salida.getFichSal());
+        request.setAttribute("fichero_estadisticas", salida.getFichEst());
+        try {
+            request.getRequestDispatcher("download.jsp").forward(request, response);
+        } catch (ServletException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private String getFileName(final Part part) {

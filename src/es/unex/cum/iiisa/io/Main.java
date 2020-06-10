@@ -26,6 +26,6 @@ public class Main {
         PathFinder pfnet = new PathFinder(e, 1, 2, nombres3);
 
         // Este método directamente genera los dos archivos de salida en la raíz del proyecto. Son los que habría que descargar
-        pfnet.execute2("");
+        pfnet.execute("");
     }
 }

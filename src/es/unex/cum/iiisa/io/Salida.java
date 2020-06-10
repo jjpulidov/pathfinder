@@ -29,11 +29,19 @@ public class Salida {
         this.fichSal = pathSalida + File.separator + "salida_" + id + ".txt";
     }
 
+    public String getFichEst() {
+        return fichEst;
+    }
+
+    public String getFichSal() {
+        return fichSal;
+    }
+
     public void run() {
         System.out.println();
-        for (double[] doubles : matriz) {
-            for (double aDouble : doubles) {
-                System.out.print(aDouble + " ");
+        for (int i = 0; i < matriz.length; i++) {
+            for (int j = 0; j < matriz[i].length; j++) {
+                System.out.print(matriz[i][j] + " ");
             }
             System.out.println();
         }

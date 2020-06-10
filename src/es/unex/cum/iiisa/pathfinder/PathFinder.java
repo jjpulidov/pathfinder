@@ -3,7 +3,9 @@ package es.unex.cum.iiisa.pathfinder;
 import es.unex.cum.iiisa.io.Entrada;
 import es.unex.cum.iiisa.io.Salida;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 
 public class PathFinder {
     private final int q, r, n;
@@ -55,6 +57,7 @@ public class PathFinder {
 
         Salida salida = new Salida(entrada, pfnet, fechaInicio, fechaFin, id, pathSalida);
         salida.run();
+        return salida;
     }
 
     public double[][] inicializarMatriz(double[][] matrix) {
@@ -191,7 +194,6 @@ public class PathFinder {
                 sum_i += fila[enlace.getI()];
                 sum_j += fila[enlace.getJ()];
             }
-
             if (sum_i == 1 || sum_j == 1)
                 enlace.setEtiqueta("PRI");
             else if (sum_i > 1 || sum_j > 1)

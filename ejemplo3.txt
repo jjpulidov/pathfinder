@@ -1,5 +1,5 @@
 ejemplo3
-similaridad
+distancias
 6
 0
 0

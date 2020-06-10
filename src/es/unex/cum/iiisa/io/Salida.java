@@ -59,8 +59,12 @@ public class Salida {
 
         for (int i = 0; i < matriz.length; i++) {
             for (int j = 0; j < matriz[i].length; j++) {
-                if (matriz[i][j] != 0)
-                    pares.add((i + 1) + "\t" + (j + 1) + "\t" + matriz[i][j]);
+                if (matriz[i][j] != 0) {
+                    if (entrada.getTipoMatriz().equals("simetrica") && j > i)
+                        pares.add((i + 1) + "\t" + (j + 1) + "\t" + matriz[i][j]);
+                    else if (entrada.getTipoMatriz().equals("asimetrica"))
+                        pares.add((i + 1) + "\t" + (j + 1) + "\t" + matriz[i][j]);
+                }
             }
         }
 

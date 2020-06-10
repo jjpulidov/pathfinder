@@ -152,16 +152,17 @@ public class PathFinder {
         Map<Double, List<Enlace>> clasesNoOrdenadas = new HashMap<>();
         for (int i = 0; i < matrizPesos.length; i++) {
             for (int j = 0; j < matrizPesos[i].length; j++) {
-                if (!clasesNoOrdenadas.containsKey(matrizPesos[i][j])) {
-                    clasesNoOrdenadas.put(matrizPesos[i][j], Collections.singletonList(new Enlace(i, j)));
-                } else {
-                    List<Enlace> temp = new ArrayList<>(clasesNoOrdenadas.get(matrizPesos[i][j]));
-                    temp.add(new Enlace(i, j));
-                    clasesNoOrdenadas.put(matrizPesos[i][j], temp);
+                if (j > i) {
+                    if (!clasesNoOrdenadas.containsKey(matrizPesos[i][j])) {
+                        clasesNoOrdenadas.put(matrizPesos[i][j], Collections.singletonList(new Enlace(i, j)));
+                    } else {
+                        List<Enlace> temp = new ArrayList<>(clasesNoOrdenadas.get(matrizPesos[i][j]));
+                        temp.add(new Enlace(i, j));
+                        clasesNoOrdenadas.put(matrizPesos[i][j], temp);
+                    }
                 }
             }
         }
-
 
         Map<Double, List<Enlace>> clases = new TreeMap<>(clasesNoOrdenadas);
         int numClases = clases.keySet().size();

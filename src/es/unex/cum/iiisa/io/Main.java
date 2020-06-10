@@ -15,7 +15,7 @@ public class Main {
         List<String> nombres3 = Arrays.asList("N1", "N2", "N3", "N4", "N5", "N6");
 
         // Aquí se procesa el fichero de entrada
-        Entrada e = new Entrada(new File("ejemplo3.txt"));
+        Entrada e = new Entrada(new File("ejemplo1.txt"));
         try {
             e.procesarFichero();
         } catch (IOException ioException) {
@@ -23,9 +23,9 @@ public class Main {
         }
 
         // Llamada al algoritmo con los valores r y q que entran por teclado, al igual que los nombres
-        PathFinder pfnet = new PathFinder(e, 1, 2, nombres3);
+        PathFinder pfnet = new PathFinder(e, 2, 6, nombres1);
 
         // Este método directamente genera los dos archivos de salida en la raíz del proyecto. Son los que habría que descargar
-        pfnet.execute1("");
+        pfnet.execute1("./");
     }
 }

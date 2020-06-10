@@ -25,15 +25,15 @@ public class Salida {
         this.matriz = matriz;
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
-        this.fichEst = "estadistica_" + id + ".txt";
+        this.fichEst = pathSalida + File.separator + "estadistica_" + id + ".txt";
         this.fichSal = pathSalida + File.separator + "salida_" + id + ".txt";
     }
 
     public void run() {
         System.out.println();
-        for (int i = 0; i< matriz.length; i++){
-            for (int j = 0; j < matriz[i].length; j++){
-                System.out.print(matriz[i][j] + " ");
+        for (double[] doubles : matriz) {
+            for (double aDouble : doubles) {
+                System.out.print(aDouble + " ");
             }
             System.out.println();
         }

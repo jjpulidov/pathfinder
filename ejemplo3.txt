@@ -22,3 +22,17 @@ simetrica
 4   5   1
 4   6   9
 5   6   1
+
+En el caso de los valores por teclado hay que meter:
+    - radiobutton o algo de eso para elegir entre el algoritmo 1 y el 2.
+    - Identificador (string)
+    - Tipo de los valores de las celdas: similadirad o distancias. (string)
+    - Número de nodos de la red (n) (entero).
+    - Número de decimales de los elementos de la matriz (entero)
+    - Valor mínimo de los elementos de la matriz (double).
+    - Valor máximo (double).
+    - List (literalmente es ese String siempre).
+    - Número de pares (entero).
+    - Tipo de valores de la matriz: simetrica o asimetrica. (String)
+    - De aquí en adelante van los pares en cada fila.
+

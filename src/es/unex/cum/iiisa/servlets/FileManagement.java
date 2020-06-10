@@ -93,7 +93,7 @@ public class FileManagement extends HttpServlet {
             ioException.printStackTrace();
         }
         PathFinder pathFinder = new PathFinder(entrada, r, q, nombres);
-        pathFinder.execute(pathSalida);
+        pathFinder.execute1(pathSalida);
     }
 
     private String getFileName(final Part part) {

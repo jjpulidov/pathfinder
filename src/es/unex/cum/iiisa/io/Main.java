@@ -7,14 +7,24 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Clase principal para probar el modelo sin necesidad de desplegar la aplicación web.
+ */
 public class Main {
+    /**
+     * Programa principal. Instancia los nombres de los nodos que deberían ser obtenidos de la web,
+     * obtiene un fichero de entrada y r y q se modifican manualmente (deberían entrar desde la web también).
+     * Después, se lanza el algoritmo y devuelve los ficheros a la raíz del proyecto.
+     *
+     * @param args
+     */
     public static void main(String[] args) {
-        // Estos nombres creo que hay que cogerlos por teclado directamente
+        // Nombres de los nodos
         List<String> nombres1 = Arrays.asList("C1", "C2", "C3", "C4", "C5", "C6", "C7");
         List<String> nombres2 = Arrays.asList("N1", "N2", "N3", "N4");
         List<String> nombres3 = Arrays.asList("N1", "N2", "N3", "N4", "N5", "N6");
 
-        // Aquí se procesa el fichero de entrada
+        // Procesamiento del fichero de entrada
         Entrada e = new Entrada(new File("ejemplo1.txt"));
         try {
             e.procesarFichero();
@@ -22,10 +32,10 @@ public class Main {
             ioException.printStackTrace();
         }
 
-        // Llamada al algoritmo con los valores r y q que entran por teclado, al igual que los nombres
+        // Instanciación del algoritmo
         PathFinder pfnet = new PathFinder(e, 2, 6, nombres1);
 
-        // Este método directamente genera los dos archivos de salida en la raíz del proyecto. Son los que habría que descargar
-        pfnet.execute1("./");
+        // Se lanza el algoritmo 1 (para lanzar el 2, execute2())
+        pfnet.execute2("./");
     }
 }

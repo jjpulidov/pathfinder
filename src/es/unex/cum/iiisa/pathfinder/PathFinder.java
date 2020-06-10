@@ -5,14 +5,43 @@ import es.unex.cum.iiisa.io.Salida;
 
 import java.util.*;
 
+/**
+ * Clase que define los algoritmos pathfinder 3.4 (execute1()) y 3.5 (execute2()).
+ */
 public class PathFinder {
+    /**
+     * Parámetros r, q y número de nodos.
+     */
     private final int q, r, n;
+    /**
+     * Lista con los nombres de los nodos.
+     */
     private final List<String> nombres;
+    /**
+     * Matriz de pesos.
+     */
     private final double[][] matrizPesos;
+    /**
+     * Identificador.
+     */
     private final String id;
+    /**
+     * Objecto que contiene los atributos de entrada al algoritmo.
+     */
+    private final Entrada entrada;
+    /**
+     * Red pathfinder.
+     */
     private double[][] pfnet;
-    private Entrada entrada;
 
+    /**
+     * Constructor parametrizado.
+     *
+     * @param entrada Atributos de entrada al algoritmo.
+     * @param r       Parámetro r. Si r = 0 se considera infinito.
+     * @param q       Parámetro q. Tiene que ser menor que n.
+     * @param nombres Nombres de los nodos de la red.
+     */
     public PathFinder(Entrada entrada, int r, int q, List<String> nombres) {
         this.entrada = entrada;
         this.r = r;
@@ -23,7 +52,14 @@ public class PathFinder {
         this.id = entrada.getIdentificador();
     }
 
+    /**
+     * Algoritmo del punto 3.4.
+     *
+     * @param pathSalida Path de salida de los ficheros.
+     * @return Salida del algoritmo.
+     */
     public Salida execute1(String pathSalida) {
+        // Obtención de la fecha de inicio del algoritmo
         Date fechaInicio = new Date();
 
         // Definición de la matriz de distancias
@@ -35,29 +71,39 @@ public class PathFinder {
         // Copia de los valores de la matriz de pesos en la matriz de distancias
         matrizDistancias = copiarMatriz(matrizPesos, matrizDistancias);
 
-        // Definición de la matriz de mayor orden
+        // Definición de la matriz de orden mayor
         double[][] matrizOrdenSuperior = new double[n][n];
 
-        // Inicialización de la matriz de mayor orden a 0
+        // Inicialización de la matriz de orden mayor a 0
         matrizOrdenSuperior = inicializarMatriz(matrizOrdenSuperior);
 
-        // Copia de los valores de la matriz de pesos en la matriz de mayor orden
+        // Copia de los valores de la matriz de pesos en la matriz de orden mayor
         matrizOrdenSuperior = copiarMatriz(matrizPesos, matrizOrdenSuperior);
 
+        // Bucle para obtener las matrices de orden q y comparar con la matriz de distancias
         for (int i = 1; i < q; i++) {
             matrizOrdenSuperior = generarMatrizOrdenSuperior(matrizOrdenSuperior);
             matrizDistancias = generarMatrizDistanciasMinimas(matrizDistancias, matrizOrdenSuperior);
         }
 
+        // Se compara con la matriz de pesos obteniendo la PFNET
         compararConMatrizPesos(matrizDistancias);
 
+        // Obtención de la fecha de finalización del algoritmo
         Date fechaFin = new Date();
 
+        // Procesamiento de la salida del algoritmo para después generar los ficheros
         Salida salida = new Salida(entrada, pfnet, fechaInicio, fechaFin, id, pathSalida);
         salida.run();
         return salida;
     }
 
+    /**
+     * Inicialización de la matriz de entrada a 0 en todas las celdas.
+     *
+     * @param matrix Matriz.
+     * @return Matriz inicializada a 0.
+     */
     public double[][] inicializarMatriz(double[][] matrix) {
         for (double[] fila : matrix) {
             Arrays.fill(fila, 0);
@@ -66,23 +112,36 @@ public class PathFinder {
         return matrix;
     }
 
+    /**
+     * Copia de la matriz src a la matriz dst.
+     *
+     * @param src Matriz origen.
+     * @param dst Matriz destino.
+     * @return Matriz dst con los valores de src.
+     */
     public double[][] copiarMatriz(double[][] src, double[][] dst) {
         for (int i = 0; i < src.length; i++) {
             for (int j = 0; j < src[i].length; j++) {
-                double valor = src[i][j];
-                if (valor != 0)
-                    dst[i][j] = valor;
+                if (src[i][j] != 0)
+                    dst[i][j] = src[i][j];
             }
         }
 
         return dst;
     }
 
+    /**
+     * Generación de la matriz de orden superior.
+     *
+     * @param matrizOrdenInferior Matriz de orden inferior.
+     * @return Martiz de orden superior.
+     */
     public double[][] generarMatrizOrdenSuperior(double[][] matrizOrdenInferior) {
         double[][] matrizOrdenSuperior = new double[n][n];
         matrizOrdenSuperior = inicializarMatriz(matrizOrdenSuperior);
 
-        if (r == 0) {   // r == infinito
+        // Si r == 0 se considera infinito
+        if (r == 0) {
             for (int i = 0; i < n; i++) {
                 for (int j = 0; j < n; j++) {
                     double pesoMin = Double.POSITIVE_INFINITY;
@@ -114,41 +173,58 @@ public class PathFinder {
             }
         }
 
+        // Se devuelve la matriz de orden superior
         return matrizOrdenSuperior;
     }
 
+    /**
+     * Genración de la matriz de distancias mínimas.
+     *
+     * @param matrizDistancias    Matriz de distancias.
+     * @param matrizOrdenSuperior Matriz de orden superior.
+     * @return Matriz de distancias mínimas.
+     */
     public double[][] generarMatrizDistanciasMinimas(double[][] matrizDistancias, double[][] matrizOrdenSuperior) {
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 if (i == j)
                     continue;
-                double valueD = matrizDistancias[i][j];
-                double valueH = matrizOrdenSuperior[i][j];
-                if (valueD > 0 && valueH > 0)
-                    matrizDistancias[i][j] = Math.min(valueD, valueH);
+                if (matrizDistancias[i][j] > 0 && matrizOrdenSuperior[i][j] > 0)
+                    matrizDistancias[i][j] = Math.min(matrizDistancias[i][j], matrizOrdenSuperior[i][j]);
             }
         }
 
         return matrizDistancias;
     }
 
+    /**
+     * Obtención de la PFNET tras comparar la matriz distancias con la matriz de pesos.
+     *
+     * @param matrizDistancias Matriz de distancias mínimas.
+     */
     public void compararConMatrizPesos(double[][] matrizDistancias) {
         pfnet = new double[n][n];
         inicializarMatriz(pfnet);
 
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                double valueW = matrizPesos[i][j];
-                double valueD = matrizDistancias[i][j];
-                if (valueW == valueD)
-                    pfnet[i][j] = valueW;
+                if (matrizPesos[i][j] == matrizDistancias[i][j])
+                    pfnet[i][j] = matrizPesos[i][j];
             }
         }
     }
 
-    public void execute2(String pathSalida) {
+    /**
+     * Algoritmo PFNET del punto 3.5.
+     *
+     * @param pathSalida Path de los ficheros de salida.
+     */
+    public Salida execute2(String pathSalida) {
+        // Obtención de la fecha de inicio del algoritmo
         Date fechaInicio = new Date();
 
+        // Obtención de las clases de los enlaces
+        // Se utiliza un mapa con los valores de la matriz como clave y como valor una lista de enlaces
         Map<Double, List<Enlace>> clasesNoOrdenadas = new HashMap<>();
         for (int i = 0; i < matrizPesos.length; i++) {
             for (int j = 0; j < matrizPesos[i].length; j++) {
@@ -164,17 +240,25 @@ public class PathFinder {
             }
         }
 
+        // Ordenación de las clases mediante un TreeMap
         Map<Double, List<Enlace>> clases = new TreeMap<>(clasesNoOrdenadas);
+        // Se elimina la clase del valor 0
+        clases.remove(clases.keySet().toArray()[0]);
+        // Número de clases
         int numClases = clases.keySet().size();
 
-        // Clase 0
-        clases.remove(clases.keySet().toArray()[0]);
-
+        // Tabla de incidencia. Se utilizan listas para que sea dinámica
         List<int[]> incidencia = new ArrayList<>();
-        List<Enlace> enlaces = clases.get(clases.keySet().toArray()[0]);
-        List<Enlace> etiquetas = new ArrayList<>(enlaces);
-        clases.remove(clases.keySet().toArray()[0]);
 
+        // Lista con los enlaces para la clase com menor valor (la que se está procesando)
+        List<Enlace> enlaces = clases.get(clases.keySet().toArray()[0]);
+
+        // Se elimina la clase que se está procesando
+        clases.remove(clases.keySet().toArray()[0]);
+        numClases--;
+
+        // Se genera una fila (lista) para cada enlace de la clase procesada con valor 0 en todas
+        // sus posiciones menos en aquellas que pertenecen a los nodos del enlace
         for (Enlace enlace : enlaces) {
             int[] fila = new int[n];
             Arrays.fill(fila, 0);
@@ -185,6 +269,7 @@ public class PathFinder {
             incidencia.add(fila);
         }
 
+        // Comprobación de la etiqueta del enlace
         for (Enlace enlace : enlaces) {
             int sum_i = 0;
             int sum_j = 0;
@@ -192,22 +277,26 @@ public class PathFinder {
                 sum_i += fila[enlace.getI()];
                 sum_j += fila[enlace.getJ()];
             }
-            if (sum_i == 1 || sum_j == 1)
+
+            if (sum_i == 1 || sum_j == 1) // Si la columna i o j suman 1 -> Etiqueta PRI
                 enlace.setEtiqueta("PRI");
-            else if (sum_i > 1 || sum_j > 1)
+            else if (sum_i > 1 || sum_j > 1) // Si no, pero suman más de 1 -> Etiqueta SEC
                 enlace.setEtiqueta("SEC");
-            else
+            else    // Si no, no hay enlace
                 enlace.setEtiqueta("no edge");
         }
 
+        // Lista con las sublistas de enlaces que tienen conexión
         List<List<Integer>> nsl = new ArrayList<>();
+        // Nodos restantes no tratados
         List<Integer> nodosRestantes = new ArrayList<>();
         for (int i = 0; i < n; i++) {
             nodosRestantes.add(i);
         }
 
-        int nodoActual = enlaces.get(0).getI();
+        // Bucle para obtener las sublistas de nodos conectados
         while (!nodosRestantes.isEmpty()) {
+            int nodoActual = enlaces.get(0).getI();
             List<Integer> subgrafo = new ArrayList<>();
             subgrafo.add(nodoActual);
             nodosRestantes.remove(nodoActual);
@@ -227,12 +316,14 @@ public class PathFinder {
             nsl.add(subgrafo);
         }
 
-        if (nsl.size() == 1) {
-            for (int i = 1; i < numClases - 1; i++) {
+        // Si solo hay un subconjunto de nodos no se continúa
+        if (nsl.size() != 1) {
+            // Obtención de las siguiente clases y mismo procedimiento que el anterior
+            for (int i = 1; i < numClases; i++) {
                 enlaces = clases.get(clases.keySet().toArray()[i]);
-                etiquetas.addAll(enlaces);
-                clases.remove(clases.keySet().toArray()[0]);
 
+                // Se genera una fila (lista) para cada enlace de la clase procesada con valor 0 en todas
+                // sus posiciones menos en aquellas que pertenecen a los nodos del enlace
                 for (Enlace enlace : enlaces) {
                     int[] fila = new int[n];
                     Arrays.fill(fila, 0);
@@ -243,6 +334,7 @@ public class PathFinder {
                     incidencia.add(fila);
                 }
 
+                // Comprobación de la etiqueta del enlace
                 for (Enlace enlace : enlaces) {
                     int sum_i = 0;
                     int sum_j = 0;
@@ -251,11 +343,11 @@ public class PathFinder {
                         sum_j += fila[enlace.getJ()];
                     }
 
-                    if (sum_i == 1 || sum_j == 1)
+                    if (sum_i == 1 || sum_j == 1) // Si la columna i o j suman 1 -> Etiqueta PRI
                         enlace.setEtiqueta("PRI");
-                    else if (sum_i > 1 || sum_j > 1)
+                    else if (sum_i > 1 || sum_j > 1) // Si no, pero suman más de 1 -> Etiqueta SEC
                         enlace.setEtiqueta("SEC");
-                    else
+                    else    // Si no, no hay enlace
                         enlace.setEtiqueta("no edge");
                 }
 
@@ -265,6 +357,7 @@ public class PathFinder {
                     nodosRestantes.add(j);
                 }
 
+                // Bucle para obtener las sublistas de nodos conectados
                 while (!nodosRestantes.isEmpty()) {
                     List<Integer> subgrafo = new ArrayList<>();
                     subgrafo.add(enlaces.get(0).getI());
@@ -286,6 +379,7 @@ public class PathFinder {
             }
         }
 
+        // Se etiquetan los enlaces no procesados como TER
         for (double peso : clases.keySet()) {
             for (Enlace enlace : clases.get(peso)) {
                 enlace.setEtiqueta("TER");
@@ -297,15 +391,15 @@ public class PathFinder {
 
                 incidencia.add(temp);
             }
-            etiquetas.addAll(clases.get(peso));
         }
 
+        // Si no hay enlace para la red actual, se etiqueta como TER
         for (Enlace enlace : enlaces) {
             if (enlace.getEtiqueta().equals("no edge"))
                 enlace.setEtiqueta("TER");
         }
 
-
+        // Definición de la matriz de distancias
         double[][] matrizDistancias = new double[n][n];
 
         // Inicialización de la matriz de distancias a 0
@@ -314,31 +408,56 @@ public class PathFinder {
         // Copia de los valores de la matriz de pesos en la matriz de distancias
         matrizDistancias = copiarMatriz(matrizPesos, matrizDistancias);
 
-        // Definición de la matriz de mayor orden
+        // Definición de la matriz de orden mayor
         double[][] matrizOrdenSuperior = new double[n][n];
 
-        // Inicialización de la matriz de mayor orden a 0
+        // Inicialización de la matriz de orden mayor a 0
         matrizOrdenSuperior = inicializarMatriz(matrizOrdenSuperior);
 
-        // Copia de los valores de la matriz de pesos en la matriz de mayor orden
+        // Copia de los valores de la matriz de pesos en la matriz de orden mayor
         matrizOrdenSuperior = copiarMatriz(matrizPesos, matrizOrdenSuperior);
 
-        matrizOrdenSuperior = generarMatrizOrdenSuperior(matrizOrdenSuperior);
-        matrizDistancias = generarMatrizDistanciasMinimas(matrizDistancias, matrizOrdenSuperior);
+        // Bucle para obtener las matrices de orden q y comparar con la matriz de distancias
+        for (int i = 1; i < q; i++) {
+            matrizOrdenSuperior = generarMatrizOrdenSuperior(matrizOrdenSuperior);
+            matrizDistancias = generarMatrizDistanciasMinimas(matrizDistancias, matrizOrdenSuperior);
+        }
 
+        // Se compara con la matriz de pesos obteniendo la PFNET
         compararConMatrizPesos(matrizDistancias);
 
+        // Obtención de la fecha de finalización del algoritmo
         Date fechaFin = new Date();
 
+        // Procesamiento de la salida del algoritmo para después generar los ficheros
         Salida salida = new Salida(entrada, pfnet, fechaInicio, fechaFin, id, pathSalida);
         salida.run();
+        return salida;
     }
 
-    public class Enlace {
+    /**
+     * Clase que define un enlace entre dos nodos (i, j).
+     */
+    public static class Enlace {
+        /**
+         * Nodo origen.
+         */
         protected int i;
+        /**
+         * Nodo destino.
+         */
         protected int j;
+        /**
+         * Etiqueta ["PRI", "SEC", "TER", "no edge"]
+         */
         protected String etiqueta;
 
+        /**
+         * Constructor parametrizado.
+         *
+         * @param i Nodo origen.
+         * @param j Nodo destino.
+         */
         public Enlace(int i, int j) {
             this.i = i;
             this.j = j;
@@ -362,11 +481,7 @@ public class PathFinder {
 
         @Override
         public String toString() {
-            return "Enlace{" +
-                    "i=" + i +
-                    ", j=" + j +
-                    ", etiqueta='" + etiqueta + '\'' +
-                    '}';
+            return "Enlace{" + "i=" + i + ", j=" + j + ", etiqueta='" + etiqueta + '\'' + '}';
         }
     }
 }

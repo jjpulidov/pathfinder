@@ -3,9 +3,7 @@ package es.unex.cum.iiisa.pathfinder;
 import es.unex.cum.iiisa.io.Entrada;
 import es.unex.cum.iiisa.io.Salida;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class PathFinder {
     private final int q, r, n;
@@ -25,7 +23,7 @@ public class PathFinder {
         this.id = entrada.getIdentificador();
     }
 
-    public void execute1(String pathSalida) {
+    public Salida execute1(String pathSalida) {
         Date fechaInicio = new Date();
 
         // Definición de la matriz de distancias
@@ -172,9 +170,8 @@ public class PathFinder {
         clases.remove(clases.keySet().toArray()[0]);
 
         List<int[]> incidencia = new ArrayList<>();
-        List<Enlace> etiquetas = new ArrayList<>();
         List<Enlace> enlaces = clases.get(clases.keySet().toArray()[0]);
-        etiquetas.addAll(enlaces);
+        List<Enlace> etiquetas = new ArrayList<>(enlaces);
         clases.remove(clases.keySet().toArray()[0]);
 
         for (Enlace enlace : enlaces) {

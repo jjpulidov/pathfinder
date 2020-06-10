@@ -120,7 +120,7 @@ public class FileManagement extends HttpServlet {
         List<String> nombres = new ArrayList<>(Arrays.asList(nodos));
         String pathSalida = request.getServletContext().getRealPath("");
         PathFinder pathFinder = new PathFinder(entrada, r, q, nombres);
-        Salida salida = pathFinder.execute(pathSalida);
+        Salida salida = pathFinder.execute1(pathSalida);
         request.setAttribute("fichero_salida", salida.getFichSal());
         request.setAttribute("fichero_estadisticas", salida.getFichEst());
         try {

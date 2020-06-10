@@ -36,6 +36,6 @@ public class Main {
         PathFinder pfnet = new PathFinder(e, 2, 6, nombres1);
 
         // Se lanza el algoritmo 1 (para lanzar el 2, execute2())
-        pfnet.execute2("./");
+        pfnet.execute1("./");
     }
 }

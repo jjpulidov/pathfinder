@@ -18,10 +18,18 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
+/**
+ * Servlet que maneja las peticiones de la entrada de datos
+ */
 @WebServlet(name = "/FileManagement")
 @MultipartConfig
 public class FileManagement extends HttpServlet {
 
+    /**
+     * Método que maneja el POST de la petición desde web
+     * @param request peticion del cliente
+     * @param response respuesta del servidor
+     */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
         String name = request.getParameter("seleccion_entrada");
         System.out.println(name);
@@ -36,6 +44,11 @@ public class FileManagement extends HttpServlet {
         }
     }
 
+    /**
+     * Metodo que maneja todos los parámetros de la entrada por teclado de la web
+     * @param request petición del cliente
+     * @param response respuesta del servidor
+     */
     private void leerTeclado(HttpServletRequest request, HttpServletResponse response) {
         String identificador = request.getParameter("identificador");
         String tipoValores = request.getParameter("valor_celdas");
@@ -74,6 +87,11 @@ public class FileManagement extends HttpServlet {
         startPathfinder(entrada, request, response);
     }
 
+    /**
+     * Metodo que maneja todos los parámetros de la entrada por fichero de la web
+     * @param request petición del cliente
+     * @param response respuesta del servidor
+     */
     private void leerFichero(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         final Part filePart = request.getPart("file");
@@ -113,6 +131,12 @@ public class FileManagement extends HttpServlet {
         startPathfinder(entrada, request, response);
     }
 
+    /**
+     * Método para la ejecución del algoritmo Pathfinder
+     * @param entrada contiene los parametros de entrada del algoritmo
+     * @param request petición del cliente
+     * @param response respuesta del servidor
+     */
     private void startPathfinder(Entrada entrada, HttpServletRequest request, HttpServletResponse response) {
         int r = Integer.parseInt(request.getParameter("r"));
         int q = Integer.parseInt(request.getParameter("q"));
@@ -132,6 +156,11 @@ public class FileManagement extends HttpServlet {
         }
     }
 
+    /**
+     * Obtiene el nombre del fichero subido
+     * @param part parte del fichero si es demasiado grande
+     * @return nombre del fichero
+     */
     private String getFileName(final Part part) {
         for (String content : part.getHeader("content-disposition").split(";")) {
             if (content.trim().startsWith("filename")) {
